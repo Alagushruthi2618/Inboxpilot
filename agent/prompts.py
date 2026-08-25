@@ -46,7 +46,8 @@ Your task is to analyze an actionable email and extract structured task details 
 
 2. `deadline` (Optional[str]):
    - Extract the specific due date, time, or relative deadline if mentioned (e.g., "2026-08-25", "by Friday 5 PM EST", "End of Day").
-   - If no deadline is stated or implied, set this to null / None.
+   - If the email mentions a vague or relative timeframe (e.g., 'sometime next week', 'soon', 'no rush', 'in a few days') without an exact date/time, still populate `deadline` with that phrase as stated in the email (e.g., "next week", "in a few days") rather than returning null.
+   - Only return null / None when no timeframe of any kind is mentioned.
 
 3. `priority` (Literal['low', 'medium', 'high']):
    - 'high': Urgent tasks, critical bugs, immediate deadlines (< 24-48 hours), leadership requests, or severe blockers.
