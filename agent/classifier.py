@@ -4,7 +4,7 @@ from typing import Optional
 
 from langchain_core.language_models.chat_models import BaseChatModel
 from langchain_core.prompts import PromptTemplate
-from langchain_openai import ChatOpenAI
+from langchain_groq import ChatGroq
 
 from agent.models import ClassificationResult
 from agent.prompts import CLASSIFICATION_PROMPT
@@ -14,8 +14,9 @@ logger = logging.getLogger(__name__)
 
 def get_default_llm() -> BaseChatModel:
     """Instantiate the default chat model for classification."""
-    model_name = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
-    return ChatOpenAI(model=model_name, temperature=0)
+    model_name = os.getenv("GROQ_MODEL", "openai/gpt-oss-120b")
+    api_key = os.getenv("GROQ_API_KEY")
+    return ChatGroq(model=model_name, api_key=api_key, temperature=0)
 
 
 def classify_email(
@@ -32,7 +33,7 @@ def classify_email(
         subject: Email subject line.
         date: Date and time the email was received or sent.
         body: Plain text content of the email body.
-        llm: Optional LangChain chat model instance. If not provided, defaults to ChatOpenAI.
+        llm: Optional LangChain chat model instance. If not provided, defaults to ChatGroq.
 
     Returns:
         ClassificationResult: Validated Pydantic model containing is_actionable and confidence.
